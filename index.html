@@ -31,6 +31,9 @@
       margin-bottom: 2rem;
       line-height: 1.8;
       padding: 0 20px;
+      max-width: 700px; /* Limit width to make text more condensed */
+      margin-left: auto;
+      margin-right: auto;
     }
     .button-container {
       display: flex;
@@ -139,6 +142,8 @@
       text-align: center;
       padding: 20px;
       transition: opacity 0.5s ease;
+      max-width: 800px; /* Limit the width of the content */
+      width: 90%;
     }
     /* Add a subtle pulsating effect to the button */
     @keyframes pulse {
@@ -175,6 +180,31 @@
     .language-btn.active {
       font-weight: bold;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+    
+    /* Media queries for more responsive text */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      p {
+        font-size: 1.3rem;
+        max-width: 90%;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }
+      .language-btn {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>
@@ -243,7 +273,7 @@
         footer: "Created by Yichen Ren - zaoduyuan@gmail.com"
       },
       cn: {
-        title: "致我最亲爱的人",
+        title: "我的挚爱",
         message: "我知道，昨天是特别的一天，是5.20情人节，但我想说，和你在一起的每一天，都是我的情人节。你是我生命中的光芒，我想让你知道我有多爱你，谢谢你成为我的一切。",
         button: "永远属于你 ❤️",
         footer: "由任奕辰创建 - zaoduyuan@gmail.com"
