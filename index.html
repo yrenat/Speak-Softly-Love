@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Love for You</title>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #ffafbd, #ffc3a0);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    h1 {
+      font-size: 3rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px #ff6f91;
+    }
+
+    p {
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      line-height: 1.8;
+    }
+
+    .button-container {
+      text-align: center;
+    }
+
+    span {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #ff6f91;
+      color: #fff;
+      font-size: 1.2rem;
+      border-radius: 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    select {
+      padding: 10px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      background-color: #fff;
+      color: #ff6f91;
+      outline: none;
+    }
+
+    footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #fff;
+      opacity: 0.8;
+    }
+
+    /* Heart Animation */
+    .hearts {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .heart {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      background-color: #ff6f91;
+      transform: rotate(45deg);
+      animation: float 5s infinite linear;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      width: 20px;
+      height: 20px;
+      background-color: #ff6f91;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-800px) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    /* Generate multiple hearts */
+    .hearts .heart:nth-child(1) {
+      left: 10%;
+      animation-duration: 4s;
+      animation-delay: 0s;
+    }
+
+    .hearts .heart:nth-child(2) {
+      left: 20%;
+      animation-duration: 6s;
+      animation-delay: 1s;
+    }
+
+    .hearts .heart:nth-child(3) {
+      left: 30%;
+      animation-duration: 5s;
+      animation-delay: 2s;
+    }
+
+    .hearts .heart:nth-child(4) {
+      left: 40%;
+      animation-duration: 7s;
+      animation-delay: 3s;
+    }
+
+    .hearts .heart:nth-child(5) {
+      left: 50%;
+      animation-duration: 4.5s;
+      animation-delay: 1.5s;
+    }
+
+    .hearts .heart:nth-child(6) {
+      left: 60%;
+      animation-duration: 6.5s;
+      animation-delay: 2.5s;
+    }
+
+    .hearts .heart:nth-child(7) {
+      left: 70%;
+      animation-duration: 5.5s;
+      animation-delay: 0.5s;
+    }
+
+    .hearts .heart:nth-child(8) {
+      left: 80%;
+      animation-duration: 4s;
+      animation-delay: 1s;
+    }
+
+    .hearts .heart:nth-child(9) {
+      left: 90%;
+      animation-duration: 6s;
+      animation-delay: 2.5s;
+    }
+
+    .hearts .heart:nth-child(10) {
+      left: 95%;
+      animation-duration: 5s;
+      animation-delay: 3s;
+    }
+  </style>
+</head>
+<body>
+  <!-- Add an audio element for background music -->
+  <audio id="background-music" autoplay loop>
+    <source src="romance.mp4" type="audio/mp4">
+    Your browser does not support the audio element.
+  </audio>
+
+  <select id="language-selector" onchange="updateContent()">
+    <option value="en" selected>English</option>
+    <option value="zh">中文</option>
+  </select>
+
+  <div class="content" id="content">
+    <h1>To My Dearest Love</h1>
+    <p>
+      Yesterday was special, but every day with you feels like Valentine's Day.  
+      You are the light of my life, and I want you to know just how much I love you.  
+      Thank you for being my everything.
+    </p>
+    <div class="button-container">
+      <span>Forever Yours ❤️</span>
+    </div>
+  </div>
+
+  <div class="hearts">
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+  </div>
+
+  <footer>
+    Created by Yichen Ren - zaoduyuan@gmail.com
+  </footer>
+
+  <script>
+    const content = {
+      en: {
+        title: "To My Dearest Love",
+        message:
+          "Yesterday was special, but every day with you feels like Valentine's Day. You are the light of my life, and I want you to know just how much I love you. Thank you for being my everything.",
+        button: "Forever Yours ❤️",
+      },
+      zh: {
+        title: "致我最亲爱的爱人",
+        message:
+          "昨天是特别的一天，但每一天和你在一起都像情人节。你是我生命中的光，我想让你知道我有多爱你。谢谢你成为我的一切。",
+        button: "永远属于你 ❤️",
+      },
+    };
+
+    function updateContent() {
+      const language = document.getElementById("language-selector").value;
+      document.querySelector("h1").textContent = content[language].title;
+      document.querySelector("p").textContent = content[language].message;
+      document.querySelector("span").textContent = content[language].button;
+    }
+  </script>
+</body>
+</html>
