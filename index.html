@@ -119,7 +119,7 @@
       100% { opacity: 0; }
     }
     footer {
-      margin-top: 40px; /* Added more spacing to move the footer down */
+      margin-top: 40px;
       text-align: center;
       font-size: 0.9rem;
       color: #fff;
@@ -159,7 +159,7 @@
   </div>
 
   <footer>
-    Created with ❤️ by Yichen Ren - zaoduyuan@gmail.com
+    Created by Yichen Ren - zaoduyuan@gmail.com
   </footer>
 
   <script>
@@ -168,15 +168,25 @@
     const slideshow = document.getElementById('slideshow');
     const images = slideshow.querySelectorAll('img');
 
+    let slideshowDuration = 9; // 1.5 seconds per image × 6 images = 9 seconds
+
     // Play background music and add hearts when "Forever Yours ❤️" is clicked
     playButton.addEventListener('click', function () {
       audio.play();
       generateRandomHearts();
     });
 
-    // When the music ends, show the images
-    audio.addEventListener('ended', function () {
-      showSlideshow();
+    // Trigger the slideshow near the end of the music
+    audio.addEventListener('loadedmetadata', function () {
+      const audioDuration = audio.duration;
+      const slideshowStartTime = audioDuration - slideshowDuration;
+
+      // Start the slideshow 9 seconds before the music ends
+      setInterval(() => {
+        if (Math.floor(audio.currentTime) === Math.floor(slideshowStartTime)) {
+          showSlideshow();
+        }
+      }, 1000);
     });
 
     // Show the slideshow of images
@@ -193,7 +203,7 @@
           currentImage++;
           setTimeout(showNextImage, 1500); // Show the next image after 1.5 seconds
         } else {
-          // After the images are done, hide the slideshow and reset to default UI
+          // After the images are done, hide the slideshow
           slideshow.style.display = 'none';
         }
       }
