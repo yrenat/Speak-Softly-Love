@@ -15,7 +15,7 @@
       align-items: center;
       overflow: hidden;
       color: #fff;
-      transition: background-color 1s ease;
+      transition: all 1s ease;
       margin: 0;
       padding: 0;
     }
@@ -107,9 +107,10 @@
       height: 100%;
       display: none;
       z-index: 10;
-      background-color: rgba(0, 0, 0, 0.8);
+      background: radial-gradient(circle, rgba(255,175,189,0.85) 0%, rgba(255,195,160,0.85) 100%);
       align-items: center;
       justify-content: center;
+      backdrop-filter: blur(5px);
     }
     .slideshow img {
       max-width: 80%;
@@ -119,8 +120,13 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 30px rgba(255, 111, 145, 0.4);
       border-radius: 10px;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .fade-in {
+      opacity: 1 !important;
     }
     footer {
       margin-top: 40px;
@@ -128,11 +134,23 @@
       font-size: 0.9rem;
       color: #fff;
       opacity: 0.8;
+      position: relative;
+      z-index: 1;
     }
     .content {
       z-index: 1;
       text-align: center;
       padding: 20px;
+      transition: opacity 0.5s ease;
+    }
+    /* Add a subtle pulsating effect to the button */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    #play-button {
+      animation: pulse 2s infinite;
     }
   </style>
 </head>
@@ -143,7 +161,7 @@
     Your browser does not support the audio element.
   </audio>
 
-  <div class="content">
+  <div class="content" id="main-content">
     <h1>To My Dearest Love</h1>
     <p>
       Yesterday was special, but every day with you feels like Valentine's Day.  
@@ -176,9 +194,11 @@
     const playButton = document.getElementById('play-button');
     const slideshow = document.getElementById('slideshow');
     const images = slideshow.querySelectorAll('img');
+    const mainContent = document.getElementById('main-content');
     const body = document.body;
 
-    let slideshowDuration = 9; // 1.5 seconds per image × 6 images = 9 seconds
+    // Calculate total slideshow duration: 3 seconds per image × 6 images
+    let slideshowDuration = images.length * 3;
 
     // Play background music and add hearts when "Forever Yours ❤️" is clicked
     playButton.addEventListener('click', function () {
@@ -194,7 +214,7 @@
       const audioDuration = audio.duration;
       const slideshowStartTime = audioDuration - slideshowDuration;
 
-      // Start the slideshow 9 seconds before the music ends
+      // Start the slideshow before the music ends
       setInterval(() => {
         if (Math.floor(audio.currentTime) === Math.floor(slideshowStartTime)) {
           showSlideshow();
@@ -212,22 +232,33 @@
         // Hide all images first
         for (let i = 0; i < images.length; i++) {
           images[i].style.display = 'none';
+          images[i].classList.remove('fade-in');
         }
         
         // Show the current image
         if (index < images.length) {
           images[index].style.display = 'block';
-          currentIndex++;
           
-          // Schedule the next image
-          if (currentIndex < images.length) {
-            setTimeout(() => showImage(currentIndex), 1500);
-          } else {
-            // When all images have been shown, close the slideshow
+          // Trigger fade-in effect after a small delay
+          setTimeout(() => {
+            images[index].classList.add('fade-in');
+          }, 50);
+          
+          // Schedule the next image with fade-out time included
+          setTimeout(() => {
+            images[index].classList.remove('fade-in');
+            
+            // Wait for fade-out before showing next image
             setTimeout(() => {
-              slideshow.style.display = 'none';
-            }, 1500);
-          }
+              currentIndex++;
+              if (currentIndex < images.length) {
+                showImage(currentIndex);
+              } else {
+                // When all images have been shown, close the slideshow
+                slideshow.style.display = 'none';
+              }
+            }, 1000); // 1 second for fade-out
+          }, 2000); // 2 seconds of full visibility (total: 3 seconds per image)
         }
       }
       
