@@ -94,6 +94,30 @@
         opacity: 0;
       }
     }
+    /* Image Slideshow Styles */
+    .slideshow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: auto;
+      display: none;
+      z-index: 10;
+    }
+    .slideshow img {
+      width: 100%;
+      height: auto;
+      opacity: 0;
+      position: absolute;
+      animation: fadeEffect 3s ease-in-out forwards;
+    }
+    @keyframes fadeEffect {
+      0% { opacity: 0; }
+      25% { opacity: 1; }
+      75% { opacity: 1; }
+      100% { opacity: 0; }
+    }
     footer {
       margin-top: 40px; /* Added more spacing to move the footer down */
       text-align: center;
@@ -124,20 +148,58 @@
 
   <div class="hearts" id="hearts-container"></div>
 
+  <!-- Slideshow Container -->
+  <div class="slideshow" id="slideshow">
+    <img src="1.jpg" alt="Image 1">
+    <img src="2.jpg" alt="Image 2">
+    <img src="3.jpg" alt="Image 3">
+    <img src="4.jpg" alt="Image 4">
+    <img src="5.jpg" alt="Image 5">
+    <img src="6.jpg" alt="Image 6">
+  </div>
+
   <footer>
-    Created by Yichen Ren - zaoduyuan@gmail.com
+    Created with ❤️ by Yichen Ren - zaoduyuan@gmail.com
   </footer>
 
   <script>
-    // Play background music when "Forever Yours ❤️" is clicked
-    document.getElementById('play-button').addEventListener('click', function () {
-      // Play the music
-      const audio = document.getElementById('background-music');
-      audio.play();
+    const audio = document.getElementById('background-music');
+    const playButton = document.getElementById('play-button');
+    const slideshow = document.getElementById('slideshow');
+    const images = slideshow.querySelectorAll('img');
 
-      // Add random heart animations
+    // Play background music and add hearts when "Forever Yours ❤️" is clicked
+    playButton.addEventListener('click', function () {
+      audio.play();
       generateRandomHearts();
     });
+
+    // When the music ends, show the images
+    audio.addEventListener('ended', function () {
+      showSlideshow();
+    });
+
+    // Show the slideshow of images
+    function showSlideshow() {
+      slideshow.style.display = 'block'; // Show the slideshow container
+      let currentImage = 0;
+
+      function showNextImage() {
+        if (currentImage > 0) {
+          images[currentImage - 1].style.animation = ''; // Remove animation from the previous image
+        }
+        if (currentImage < images.length) {
+          images[currentImage].style.animation = 'fadeEffect 3s ease-in-out forwards';
+          currentImage++;
+          setTimeout(showNextImage, 1500); // Show the next image after 1.5 seconds
+        } else {
+          // After the images are done, hide the slideshow and reset to default UI
+          slideshow.style.display = 'none';
+        }
+      }
+
+      showNextImage();
+    }
 
     // Generate random hearts and animate them
     function generateRandomHearts() {
