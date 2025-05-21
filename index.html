@@ -15,6 +15,7 @@
       align-items: center;
       overflow: hidden;
       color: #fff;
+      transition: background-color 1s ease;
     }
     h1 {
       font-size: 3rem;
@@ -100,7 +101,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 80%;
+      width: 60%;
       height: auto;
       display: none;
       z-index: 10;
@@ -159,7 +160,7 @@
   </div>
 
   <footer>
-    Created by Yichen Ren - zaoduyuan@gmail.com
+    Created with ❤️ by Yichen Ren - zaoduyuan@gmail.com
   </footer>
 
   <script>
@@ -167,6 +168,7 @@
     const playButton = document.getElementById('play-button');
     const slideshow = document.getElementById('slideshow');
     const images = slideshow.querySelectorAll('img');
+    const body = document.body;
 
     let slideshowDuration = 9; // 1.5 seconds per image × 6 images = 9 seconds
 
@@ -191,6 +193,7 @@
 
     // Show the slideshow of images
     function showSlideshow() {
+      body.style.background = 'none'; // Remove the pink background
       slideshow.style.display = 'block'; // Show the slideshow container
       let currentImage = 0;
 
@@ -203,8 +206,9 @@
           currentImage++;
           setTimeout(showNextImage, 1500); // Show the next image after 1.5 seconds
         } else {
-          // After the images are done, hide the slideshow
+          // After the images are done, hide the slideshow and reset the background
           slideshow.style.display = 'none';
+          body.style.background = 'linear-gradient(to bottom, #ffafbd, #ffc3a0)';
         }
       }
 
