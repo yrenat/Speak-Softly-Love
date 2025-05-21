@@ -123,10 +123,7 @@
       box-shadow: 0 0 30px rgba(255, 111, 145, 0.4);
       border-radius: 10px;
       opacity: 0;
-      transition: opacity 1s ease-in-out;
-    }
-    .fade-in {
-      opacity: 1 !important;
+      transition: opacity 1.5s ease-in-out;
     }
     footer {
       margin-top: 40px;
@@ -228,42 +225,40 @@
       
       let currentIndex = 0;
       
-      function showImage(index) {
-        // Hide all images first
-        for (let i = 0; i < images.length; i++) {
-          images[i].style.display = 'none';
-          images[i].classList.remove('fade-in');
+      // Function to show an image with fade effect
+      function showNextImage() {
+        // If we've shown all images, hide the slideshow and return
+        if (currentIndex >= images.length) {
+          setTimeout(() => {
+            slideshow.style.display = 'none';
+          }, 1500); // Wait for the last image to fade out
+          return;
         }
         
-        // Show the current image
-        if (index < images.length) {
-          images[index].style.display = 'block';
+        // Setup current image
+        const currentImg = images[currentIndex];
+        currentImg.style.display = 'block';
+        
+        // Fade in
+        setTimeout(() => {
+          currentImg.style.opacity = 1;
           
-          // Trigger fade-in effect after a small delay
+          // Schedule fade out
           setTimeout(() => {
-            images[index].classList.add('fade-in');
-          }, 50);
-          
-          // Schedule the next image with fade-out time included
-          setTimeout(() => {
-            images[index].classList.remove('fade-in');
+            currentImg.style.opacity = 0;
             
-            // Wait for fade-out before showing next image
+            // After fade out completes, hide this image and show next
             setTimeout(() => {
+              currentImg.style.display = 'none';
               currentIndex++;
-              if (currentIndex < images.length) {
-                showImage(currentIndex);
-              } else {
-                // When all images have been shown, close the slideshow
-                slideshow.style.display = 'none';
-              }
-            }, 1000); // 1 second for fade-out
-          }, 2000); // 2 seconds of full visibility (total: 3 seconds per image)
-        }
+              showNextImage();
+            }, 1500); // Time for fade out (1.5s)
+          }, 1500); // Time to display at full opacity (1.5s)
+        }, 100); // Small delay before starting fade in
       }
       
-      // Start showing images
-      showImage(currentIndex);
+      // Start the slideshow
+      showNextImage();
     }
 
     // Generate random hearts and animate them
