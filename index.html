@@ -16,6 +16,8 @@
       overflow: hidden;
       color: #fff;
       transition: background-color 1s ease;
+      margin: 0;
+      padding: 0;
     }
     h1 {
       font-size: 3rem;
@@ -28,6 +30,7 @@
       text-align: center;
       margin-bottom: 2rem;
       line-height: 1.8;
+      padding: 0 20px;
     }
     .button-container {
       display: flex;
@@ -97,27 +100,27 @@
     }
     /* Image Slideshow Styles */
     .slideshow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      z-index: 10;
+      background-color: rgba(0, 0, 0, 0.8);
+      align-items: center;
+      justify-content: center;
+    }
+    .slideshow img {
+      max-width: 80%;
+      max-height: 80vh;
+      display: none;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 60%;
-      height: auto;
-      display: none;
-      z-index: 10;
-    }
-    .slideshow img {
-      width: 100%;
-      height: auto;
-      opacity: 0;
-      position: absolute;
-      animation: fadeEffect 3s ease-in-out forwards;
-    }
-    @keyframes fadeEffect {
-      0% { opacity: 0; }
-      25% { opacity: 1; }
-      75% { opacity: 1; }
-      100% { opacity: 0; }
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
     }
     footer {
       margin-top: 40px;
@@ -125,6 +128,11 @@
       font-size: 0.9rem;
       color: #fff;
       opacity: 0.8;
+    }
+    .content {
+      z-index: 1;
+      text-align: center;
+      padding: 20px;
     }
   </style>
 </head>
@@ -160,7 +168,7 @@
   </div>
 
   <footer>
-    Created with ❤️ by Yichen Ren - zaoduyuan@gmail.com
+    Created by Yichen Ren - zaoduyuan@gmail.com
   </footer>
 
   <script>
@@ -176,6 +184,9 @@
     playButton.addEventListener('click', function () {
       audio.play();
       generateRandomHearts();
+      
+      // For testing purposes, uncomment to start slideshow immediately
+      // setTimeout(showSlideshow, 2000);
     });
 
     // Trigger the slideshow near the end of the music
@@ -193,26 +204,35 @@
 
     // Show the slideshow of images
     function showSlideshow() {
-      body.style.background = 'none'; // Remove the pink background
-      slideshow.style.display = 'block'; // Show the slideshow container
-      let currentImage = 0;
-
-      function showNextImage() {
-        if (currentImage > 0) {
-          images[currentImage - 1].style.animation = ''; // Remove animation from the previous image
+      slideshow.style.display = 'flex'; // Show the slideshow container
+      
+      let currentIndex = 0;
+      
+      function showImage(index) {
+        // Hide all images first
+        for (let i = 0; i < images.length; i++) {
+          images[i].style.display = 'none';
         }
-        if (currentImage < images.length) {
-          images[currentImage].style.animation = 'fadeEffect 3s ease-in-out forwards';
-          currentImage++;
-          setTimeout(showNextImage, 1500); // Show the next image after 1.5 seconds
-        } else {
-          // After the images are done, hide the slideshow and reset the background
-          slideshow.style.display = 'none';
-          body.style.background = 'linear-gradient(to bottom, #ffafbd, #ffc3a0)';
+        
+        // Show the current image
+        if (index < images.length) {
+          images[index].style.display = 'block';
+          currentIndex++;
+          
+          // Schedule the next image
+          if (currentIndex < images.length) {
+            setTimeout(() => showImage(currentIndex), 1500);
+          } else {
+            // When all images have been shown, close the slideshow
+            setTimeout(() => {
+              slideshow.style.display = 'none';
+            }, 1500);
+          }
         }
       }
-
-      showNextImage();
+      
+      // Start showing images
+      showImage(currentIndex);
     }
 
     // Generate random hearts and animate them
