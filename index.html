@@ -149,9 +149,43 @@
     #play-button {
       animation: pulse 2s infinite;
     }
+    
+    /* Language selection styles */
+    .language-selector {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    .language-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+    .language-btn:hover, .language-btn.active {
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+    }
+    .language-btn.active {
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
   </style>
 </head>
 <body>
+  <!-- Language Selector -->
+  <div class="language-selector">
+    <button class="language-btn active" data-lang="en">English</button>
+    <button class="language-btn" data-lang="cn">中文</button>
+    <button class="language-btn" data-lang="fr">Français</button>
+  </div>
+
   <!-- Audio Element with Loop -->
   <audio id="background-music" loop>
     <source src="romance.mp4" type="audio/mp4">
@@ -159,8 +193,8 @@
   </audio>
 
   <div class="content" id="main-content">
-    <h1>To My Dearest Love</h1>
-    <p>
+    <h1 id="title">To My Dearest Love</h1>
+    <p id="message">
       Yesterday was special, but every day with you feels like Valentine's Day.  
       You are the light of my life, and I want you to know just how much I love you.  
       Thank you for being my everything.
@@ -182,7 +216,7 @@
     <img src="6.jpg" alt="Image 6">
   </div>
 
-  <footer>
+  <footer id="footer">
     Created by Yichen Ren - zaoduyuan@gmail.com
   </footer>
 
@@ -193,6 +227,34 @@
     const images = slideshow.querySelectorAll('img');
     const mainContent = document.getElementById('main-content');
     const body = document.body;
+    
+    // Text elements
+    const titleEl = document.getElementById('title');
+    const messageEl = document.getElementById('message');
+    const buttonEl = document.getElementById('play-button');
+    const footerEl = document.getElementById('footer');
+
+    // Language translations
+    const translations = {
+      en: {
+        title: "To My Dearest Love",
+        message: "Yesterday was special, but every day with you feels like Valentine's Day. You are the light of my life, and I want you to know just how much I love you. Thank you for being my everything.",
+        button: "Forever Yours ❤️",
+        footer: "Created by Yichen Ren - zaoduyuan@gmail.com"
+      },
+      cn: {
+        title: "致我最亲爱的人",
+        message: "我知道，昨天是特别的一天，是5.20情人节，但我想说，和你在一起的每一天，都是我的情人节。你是我生命中的光芒，我想让你知道我有多爱你，谢谢你成为我的一切。",
+        button: "永远属于你 ❤️",
+        footer: "由任奕辰创建 - zaoduyuan@gmail.com"
+      },
+      fr: {
+        title: "À Mon Amour Très Cher",
+        message: "Hier était spécial, mais chaque jour avec toi se sent comme la Saint-Valentin. Tu es la lumière de ma vie, et je veux que tu saches à quel point je t'aime. Merci d'être mon tout.",
+        button: "Pour Toujours À Toi ❤️",
+        footer: "Créé par Yichen Ren - zaoduyuan@gmail.com"
+      }
+    };
 
     // Set the time for each image: 5 seconds display + 1.5s fade in + 1.5s fade out
     const displayTime = 5000; // 5 seconds for displaying each image
@@ -202,7 +264,33 @@
     // Calculate total slideshow duration: total time per image × number of images
     let slideshowDuration = (images.length * totalTimePerImage) / 1000; // convert to seconds
 
-    // Play background music and add hearts when "Forever Yours ❤️" is clicked
+    // Language selection functionality
+    const languageBtns = document.querySelectorAll('.language-btn');
+    languageBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Update active button styling
+        languageBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Get the language code
+        const lang = this.getAttribute('data-lang');
+        
+        // Update the text content
+        changeLanguage(lang);
+      });
+    });
+
+    // Function to change language
+    function changeLanguage(lang) {
+      if (translations[lang]) {
+        titleEl.textContent = translations[lang].title;
+        messageEl.textContent = translations[lang].message;
+        buttonEl.textContent = translations[lang].button;
+        footerEl.textContent = translations[lang].footer;
+      }
+    }
+
+    // Play background music and add hearts when the button is clicked
     playButton.addEventListener('click', function () {
       audio.play();
       generateRandomHearts();
